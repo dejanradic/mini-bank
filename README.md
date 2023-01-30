@@ -20,9 +20,20 @@ Here is the list of roles and respective uses cases which they can execute upon 
 
 ## Custody Operations
 Account is identified by an address. Address can have a single account. If customer wants multiple accounts, he can use multiple addresses. Custody operations are enabled by introducing deposit/withdraw functions for the customer, as well as management of tokens (currencies) by the administrator. Anybody can do a transfer from its respective account. Operator can do it for anybody from the back office. 
-> Deposit is enabled through **approve/transferFrom** pattern requiring 2 transactions.
+
 > Anybody can get a list of supported tokens with descriptions by calling **getSupportedTokens()** function.
 > Token (currency) is identified through **IERC20Metadata** which is extension of **ERC20** with name, symbol and decimals.
+> Deposit is enabled through **approve/transferFrom** pattern requiring 2 transactions, presented in a sequence diagram below.
+
+```mermaid
+sequenceDiagram
+Customer ->> Token: approve(miniBank, amount)
+Token ->> Customer: OK
+Customer ->> MiniBank: deposit(token, amount)
+MiniBank ->> Token: transferFrom(customer, miniBank, amount)
+Token ->> MiniBank: OK
+MiniBank ->> Customer: OK
+```
 
 ## Loan Operations
 Innovation in Mini Bank is the introduction of collateralized liquidateable loans. Customer can have a single loan. In order to request the loan, he needs to supply a collateral in one of the bank's tokens. Liquidation is enabled when loan breaks deadline or when a collateral value falls below the borrowed amount in accordance to **LTV** (Loan-to-Value).
@@ -51,6 +62,9 @@ Innovation in Mini Bank is the introduction of collateralized liquidateable loan
 - **Mini Bank** represents a governable ERC20 where shareholders can vote on interest rates, new admins/bankers, staking yields etc.
 - **ERC20** interface checks on new token introduction for safety/reliability
 
+
+
+## Class Diagram
 ![Alt text](./class-diagram.svg)
 <img src="./class-diagram.svg">
 
