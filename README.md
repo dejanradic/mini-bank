@@ -3,10 +3,10 @@ The purpose of the implementation is a small **Web3** bank. It is divided into b
 
 ## Roles
 The following roles are identified in bank operations:
-- Owner - the owner of the bank that appoints bank administrators (admins)
-- Admin - bank administrator who is responsbile for the creation and offering of new bank products (loan offerings in this case) including the appointing of bank operators
-- Operator - works in Back Office of the bank and is responsbile for making transfers on behalf of customers and executing liquidations of loans
-- Customer - general stakeholder who uses the bank's offerings
+- **Owner** - the owner of the bank that appoints bank administrators (admins)
+- **Admin** - bank administrator who is responsbile for the creation and offering of new bank products (loan offerings in this case) including the appointing of bank operators
+- **Operator** - works in Back Office of the bank and is responsbile for making transfers on behalf of customers and executing liquidations of loans
+- **Customer** - general stakeholder who uses the bank's offerings
 
 > For the implementation of roles, **RoleAccessControl** based on **AccessControl** contract from **OpenZeppelin** is used.
 ## Use Cases
@@ -32,12 +32,25 @@ Innovation in Mini Bank is the introduction of collateralized liquidateable loan
 **LTV** (Loan-to-Value) is settable (by admin) per **LoanConfig** based on admin's views on loan. It represents a percentage of loan value in regards to collateral value. 
 
 > If **LTV** value falls betow 100%, loan is over-collateralized. On the contrary, it is under-collateralized or liquidateable
+> By calling **updateLoans()** function, operator would liquidate all of the liquidateable loans
 
 ## Important Information
 
-- **Mini Bank** is implemented using Solidity 0.8.9
-- Tests are implemented in HardHat
-- Events are emitted on important operations for external reporting purposes
-- Safe operations (transfer, transferFrom) are used for proper handling of **bool** return values
-- Oracles and Liquidator are abstracted as interfaces and can be futher implemented/mocked
+- **Mini Bank** is implemented using **Solidity 0.8.9**
+- Tests are implemented in **HardHat**
+- **Events** are emitted on important operations for external reporting purposes
+- **Safe operations** (transfer, transferFrom) are used for proper handling of **bool** return values
+- **Oracles** and **Liquidator** are abstracted as interfaces and can be futher implemented/mocked
+
+## Future Improvements
+
+- **Multiple loans** per customer
+- Customer can do **staking** with respective **yields**, where those funds would be used for loans (**Compound-like** functionality)
+- **Power of Attorney** - customer can add multiple addresses (attorneys) which can do deposits/withdraws on his behalf
+- Bank can act as an **escrow** provider, enabling customers the safe transfer of value
+- **Mini Bank** represents a governable ERC20 where shareholders can vote on interest rates, new admins/bankers, staking yields etc.
+- **ERC20** interface checks on new token introduction for safety/reliability
+
+![Alt text](./class-diagram.svg)
+<img src="./class-diagram.svg">
 
